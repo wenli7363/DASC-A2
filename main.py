@@ -6,9 +6,6 @@ from tokenizer import initialize_tokenizer
 from trainer import build_trainer
 from utils import not_change_test_dataset, set_random_seeds
 
-# Configuration Constants
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-
 
 def main():
     """
