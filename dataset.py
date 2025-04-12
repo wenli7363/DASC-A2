@@ -1,5 +1,5 @@
-from datasets import Dataset, DatasetDict, IterableDataset, IterableDatasetDict
-
+from datasets import Dataset, DatasetDict, IterableDataset, IterableDatasetDict, load_dataset
+from transformers import DataCollatorForTokenClassification
 
 def align_labels_with_tokens(
     labels: list[int],
@@ -8,11 +8,6 @@ def align_labels_with_tokens(
     """
     Align labels with tokenized word IDs, ensuring special tokens are ignored (-100).
 
-    The first rule we’ll apply is that special tokens get a label of -100.
-    This is because by default -100 is an index that is ignored in the loss function we will use (cross entropy).
-    Then, each token gets the same label as the token that started the word it’s inside, since they are part of the same entity.
-    For tokens inside a word but not at the beginning, we replace the B- with I- (since the token does not begin the entity):
-
     Args:
         labels: List of token labels.
         word_ids: List of word IDs.
@@ -20,7 +15,20 @@ def align_labels_with_tokens(
     Returns:
         A list of aligned labels.
     """
-    # Write your code here.
+    aligned_labels = []
+    previous_word_id = None
+
+    for word_id in word_ids:
+        if word_id is None:  # Special tokens
+            aligned_labels.append(-100)
+        elif word_id != previous_word_id:  # Start of a new word
+            aligned_labels.append(labels[word_id])
+        else:  # Inside a word
+            # Inherit the label from the first token of the word
+            aligned_labels.append(aligned_labels[-1])  # Use the last appended label
+        previous_word_id = word_id
+
+    return aligned_labels
 
 
 def tokenize_and_align_labels(examples: dict, tokenizer) -> dict:
@@ -41,7 +49,8 @@ def tokenize_and_align_labels(examples: dict, tokenizer) -> dict:
     tokenized_inputs = tokenizer(
         examples["tokens"],
         truncation=True,
-        is_split_into_words=True,
+        padding=False,
+        is_split_into_words=True
     )
     all_labels = examples["ner_tags"]
     aligned_labels = [
@@ -77,7 +86,12 @@ def build_dataset() -> DatasetDict | Dataset | IterableDatasetDict | IterableDat
         raw_datasets["test"] = load_dataset('tomaarsen/MultiCoNER', 'multi', split="test")
     """
     # Write your code here.
+    print("Start Loading dataset...")
+    raw_datasets: DatasetDict = DatasetDict()
+    raw_datasets["train"] = load_dataset('tomaarsen/MultiCoNER', 'multi', split="train")
+    raw_datasets["validation"] = load_dataset('tomaarsen/MultiCoNER', 'multi', split="validation")
     raw_datasets["test"] = load_dataset('tomaarsen/MultiCoNER', 'multi', split="test")
+    return raw_datasets
 
 
 def preprocess_data(raw_datasets: DatasetDict, tokenizer) -> DatasetDict:
@@ -101,3 +115,21 @@ def preprocess_data(raw_datasets: DatasetDict, tokenizer) -> DatasetDict:
     )
 
     return tokenized_datasets
+
+
+
+def get_data_collator(tokenizer) -> DataCollatorForTokenClassification:
+    """
+    Get the data collator for token classification.
+
+    Returns:
+        Data collator.
+    """
+    # Write your code here.
+    data_collator = DataCollatorForTokenClassification(
+        tokenizer=tokenizer,
+        padding=True,
+        max_length = None,
+        return_tensors="pt",
+    )
+    return data_collator

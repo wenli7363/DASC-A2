@@ -1,5 +1,5 @@
 from transformers import DataCollatorForTokenClassification, Trainer, TrainingArguments
-
+from dataset import get_data_collator
 from constants import OUTPUT_DIR
 from evaluation import compute_metrics
 
@@ -40,7 +40,7 @@ def build_trainer(model, tokenizer, tokenized_datasets) -> Trainer:
     Returns:
         Trainer object for training and evaluation.
     """
-    data_collator = DataCollatorForTokenClassification(tokenizer=tokenizer)
+    data_collator = get_data_collator(tokenizer)
 
     training_args: TrainingArguments = create_training_arguments()
 
