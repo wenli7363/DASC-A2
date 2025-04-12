@@ -8,17 +8,34 @@ def compute_metrics(eval_predictions: EvalPrediction) -> dict[str, float]:
     """
     Compute evaluation metrics (precision, recall, f1) for predictions.
 
-    First takes the argmax of the logits to convert them to predictions.
-    Then we have to convert both labels and predictions from integers to strings.
-    We remove all the values where the label is -100, then pass the results to the metric.compute() method.
-    Finally, we return the overall precision, recall, and f1 score.
-
     Args:
         eval_predictions: Evaluation predictions.
 
     Returns:
         Dictionary with evaluation metrics. Keys: precision, recall, f1.
-
-    NOTE: You can use `metric_evaluator` to compute metrics for a list of predictions and references.
     """
-    # Write your code here.
+    # 获取预测值和标签
+    predictions, labels = eval_predictions.predictions, eval_predictions.label_ids
+
+    # 对预测值取 argmax，得到每个 token 的预测标签
+    predictions = predictions.argmax(axis=-1)
+
+    # 将预测值和标签转换为字符串形式
+    true_labels = [
+        [metric_evaluator.id2label[label] for label in label_seq if label != -100]
+        for label_seq in labels
+    ]
+    pred_labels = [
+        [metric_evaluator.id2label[pred] for pred, label in zip(pred_seq, label_seq) if label != -100]
+        for pred_seq, label_seq in zip(predictions, labels)
+    ]
+
+    # 计算指标
+    results = metric_evaluator.compute(predictions=pred_labels, references=true_labels)
+
+    # 返回总体的 precision, recall 和 f1
+    return {
+        "precision": results["overall_precision"],
+        "recall": results["overall_recall"],
+        "f1": results["overall_f1"],
+    }

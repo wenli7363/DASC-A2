@@ -1,4 +1,4 @@
-from transformers import DataCollatorForTokenClassification, Trainer, TrainingArguments
+from transformers import Trainer, TrainingArguments
 from dataset import get_data_collator
 from constants import OUTPUT_DIR
 from evaluation import compute_metrics
@@ -23,6 +23,11 @@ def create_training_arguments() -> TrainingArguments:
         load_best_model_at_end=True,
         push_to_hub=False,
         eval_strategy="steps",
+        eval_steps=500,
+        per_device_train_batch_size=8,
+        num_train_epochs=3,
+        learning_rate=2e-5,
+        save_strategy="epoch", 
     )
 
     return training_args
