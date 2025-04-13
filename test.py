@@ -1,9 +1,5 @@
-import evaluate
-import os
-os.environ["http_proxy"] = 'http://127.0.0.1:8080'
-os.environ['https_proxy'] = 'http://127.0.0.1:8080'
-try:
-    metric = evaluate.load("seqeval")
-    print("Seqeval loaded successfully!")
-except Exception as e:
-    print(f"Error loading seqeval: {e}")
+# test_fix.py
+import seqeval
+print("seqeval version:", seqeval.__version__)
+from seqeval.metrics import f1_score
+print("Test f1_score:", f1_score([['O', 'B-PER']], [['O', 'B-PER']]))

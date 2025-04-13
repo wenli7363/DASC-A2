@@ -2,6 +2,6 @@ torch
 transformers
 datasets
 accelerate
-seqeval
 pytest
-evaluate
+evaluate==0.4.0 
+seqeval==1.2.2
