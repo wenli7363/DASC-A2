@@ -26,13 +26,15 @@ def create_training_arguments() -> TrainingArguments:
         per_device_train_batch_size=8,
         # per_device_train_batch_size=16,
         per_device_eval_batch_size=4,
-        num_train_epochs=5,
-        learning_rate=2e-5 * 2,
+        num_train_epochs=1,
+        learning_rate=2e-5 * 3,
         save_strategy="epoch",  # 保持与 eval_strategy 一致
         weight_decay=0.01,
         lr_scheduler_type="cosine",  # 余弦退火
         warmup_ratio=0.1,  # 10% 的训练步数用于学习率 warmup
-        gradient_accumulation_steps=2,  # 实际等效批次大小=8*2=16
+        gradient_accumulation_steps=3,  # 实际等效批次大小=8*2=16
+        fp16=True,
+        eval_accumulation_steps=10,
     )
 
     return training_args
