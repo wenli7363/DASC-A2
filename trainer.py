@@ -33,7 +33,6 @@ def create_training_arguments() -> TrainingArguments:
         lr_scheduler_type="cosine",  # 余弦退火
         warmup_ratio=0.1,  # 10% 的训练步数用于学习率 warmup
         gradient_accumulation_steps=2,  # 实际等效批次大小=8*2=16
-        logging_dir="./logs",
     )
 
     return training_args
