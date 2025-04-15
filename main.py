@@ -7,7 +7,7 @@ from tokenizer import initialize_tokenizer
 from trainer import build_trainer
 from utils import not_change_test_dataset, set_random_seeds
 
-# import torch
+import torch
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
 def main():
