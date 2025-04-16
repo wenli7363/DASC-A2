@@ -10,7 +10,8 @@ from utils import not_change_test_dataset, set_random_seeds
 import torch
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 # os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8" 
-# os.environ["TOKENIZERS_PARALLELISM"] = "false"
+torch.use_deterministic_algorithms(False)
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 def main():
     """

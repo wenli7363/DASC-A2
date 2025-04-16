@@ -19,8 +19,8 @@ def initialize_model():
 
 
     # 冻结前几层
-    # for name, param in model.named_parameters():
-    #     if 'bert.encoder.layer' in name and int(name.split('.')[3]) < 6:  # 冻结前 6 层
-    #         param.requires_grad = False
+    for name, param in model.named_parameters():
+        if 'bert.encoder.layer' in name and int(name.split('.')[3]) < 6:  # 冻结前 6 层
+            param.requires_grad = False
 
     return model

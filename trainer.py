@@ -27,7 +27,7 @@ def create_training_arguments() -> TrainingArguments:
         per_device_train_batch_size=64  ,
         # per_device_train_batch_size=16,
         per_device_eval_batch_size=16,
-        num_train_epochs=1,
+        num_train_epochs=4,
         learning_rate=1e-4 * 2,
         save_strategy="epoch",  # 保持与 eval_strategy 一致
         weight_decay=0.01,
