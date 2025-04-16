@@ -16,4 +16,11 @@ def initialize_model():
         label2id=LABEL_TO_ID,  # 标签到 ID 的映射
         ignore_mismatched_sizes=True,  # 忽略不匹配的大小
     )
+
+
+    # 冻结前几层
+    # for name, param in model.named_parameters():
+    #     if 'bert.encoder.layer' in name and int(name.split('.')[3]) < 6:  # 冻结前 6 层
+    #         param.requires_grad = False
+
     return model
