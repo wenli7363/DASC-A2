@@ -23,18 +23,18 @@ def create_training_arguments() -> TrainingArguments:
         do_eval=True,
         load_best_model_at_end=True,
         push_to_hub=False,
-        eval_strategy="epoch",  # 修改为 "epoch" 以匹配 save_strategy
-        per_device_train_batch_size=64  ,
-        # per_device_train_batch_size=16,
-        per_device_eval_batch_size=16,
+        eval_strategy="epoch",
+        per_device_train_batch_size=64,
+        per_device_eval_batch_size=32,
         num_train_epochs=4,
-        learning_rate=1e-4 * 2,
-        save_strategy="epoch",  # 保持与 eval_strategy 一致
+        learning_rate=1e-5 * 2,
+        save_strategy="epoch",
         weight_decay=0.01,
-        lr_scheduler_type="linear",  # 余弦退火
-        warmup_ratio=0.05,  # 10% 的训练步数用于学习率 warmup
-        gradient_accumulation_steps = 2,  # 实际等效批次大小=8*2=16
+        lr_scheduler_type="linear",
+        warmup_ratio=0.1,
+        gradient_accumulation_steps=2,
         fp16=True,
+        gradient_checkpointing=True,
         eval_accumulation_steps=1000,
     )
 
