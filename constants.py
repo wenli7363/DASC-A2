@@ -1,7 +1,7 @@
 SEED = 42  # Random seed for reproducibility
 # MODEL_CHECKPOINT = "google-bert/bert-base-multilingual-cased"
-MODEL_CHECKPOINT = "FacebookAI/xlm-roberta-base"
-# MODEL_CHECKPOINT = "microsoft/mdeberta-v3-base"  # 使用更适合多语言任务的模型
+MODEL_CHECKPOINT = "MoritzLaurer/mDeBERTa-v3-base-mnli-xnli"
+
 OUTPUT_DIR = "checkpoints"  # Configurable output directory
 
 LABEL_TO_ID = {

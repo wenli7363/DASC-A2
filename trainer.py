@@ -25,7 +25,7 @@ def create_training_arguments() -> TrainingArguments:
         push_to_hub=False,
         eval_strategy="epoch",
         per_device_train_batch_size=64,
-        per_device_eval_batch_size=32,
+        per_device_eval_batch_size=16,
         num_train_epochs=4,
         learning_rate=1e-5 * 2,
         save_strategy="epoch",
